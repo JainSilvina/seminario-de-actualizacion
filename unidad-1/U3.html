@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Unidad 3</title>
+</head>
+
+<body>
+
+</body>
+
+<script type="text/javascript">
+
+    /*3. Modifique el sistema del punto 2, de modo tal que la contraseña 
+    satisfaga los requisitos de seguridad descritos a continuacion: 
+    Entre 8 y 16 caracteres alfanuméricos, al menos una mayuscula 
+    y al menos 2 símbolos especiales. 
+
+*/
+
+    let authData = new Map();
+    const maxLoginFailedAttempts = 3;
+
+    let userData =
+        [
+            {
+                password: '12345678',
+                failedLoginCounter: 0,
+                isLocked: false
+            },
+            {
+                password: '12345678',
+                failedLoginCounter: 0,
+                isLocked: false
+            }
+        ]
+
+    authData.set('scorpion', userData[0]);
+    authData.set('subZero', userData[1]);
+
+    function isValidUserGetData(username) {
+        return authData.get(username);
+    }
+
+
+    function authenticateUser(username, password) {
+        let api_return =
+        {
+            status: false,
+            result: null,
+            username: null
+        };
+
+
+        if ((username != undefined && username != null && username != '') && (password != undefined && password != null && password != '')) {
+            let userdata = isValidUserGetData(username);
+
+            if (userdata && !userdata.isLocked) {
+                if (userdata.password === password) {
+                    api_return.status = true;
+                    api_return.username = username;
+                }
+                else {
+                    api_return.status = false;
+                    api_return.result = 'USER_PASSWORD_FAILED'; // CORRECCION: Debería ser 'USER_PASSWORD_FAILED'
+
+                    userdata.failedLoginCounter++;
+
+                    if (userdata.failedLoginCounter == maxLoginFailedAttempts) {
+                        userdata.isLocked = true;
+                        api_return.status = false;
+                        api_return.result = 'BLOCKED_USER';
+                    }
+                }
+            }
+            else if (userdata && userdata.isLocked) {
+                api_return.status = false;
+                api_return.result = 'BLOCKED_USER';
+            } else {
+                api_return.status = false;
+                api_return.result = 'USER_NOT_FOUND';
+            }
+
+        }
+
+        return api_return;
+    }
+
+    // NUEVO: Funcion para cambiar la contraseña
+    function changePassword(username) {
+        let userdata = isValidUserGetData(username);
+        if (userdata) {
+            let newPassword = prompt("Ingrese su nueva contraseña:");
+            if (newPassword !== null && newPassword !== "") {
+                userdata.password = newPassword;
+                alert("Contraseña cambiada exitosamente.");
+            } else {
+                alert("La contraseña no puede estar vacía.");
+            }
+        } else {
+            alert("Error al intentar cambiar la contraseña.");
+        }
+    }
+
+    // NUEVO: Funcion para mostrar el menu de acciones
+    function showMenu(username) {
+        let option;
+        do {
+            option = prompt(`¡Bienvenido/a ${username}!\nMenu de acciones:\n1. Cambiar contraseña\nX. Salir\nIngrese una opcion:`);
+
+            if (option === '1') {
+                changePassword(username);
+            } else if (option && option.toUpperCase() === 'X') {
+                alert("Saliendo del menu.");
+            } else if (option !== null) {
+                alert("Opcion invalida. Por favor, ingrese 1 o X.");
+            }
+        } while (option !== null && option.toUpperCase() !== 'X');
+    }
+
+    // FRONTEND
+    function GUI_login() {
+        let username = prompt("Ingrese su nombre de usuario:");
+        let password = prompt("Ingrese contraseña:");
+
+        let api_return = authenticateUser(username, password);
+
+        if (api_return.status) {
+            alert('Usuario autenticado exitosamente');
+            showMenu(api_return.username);
+            return { status: false, result: 'LOGOUT' };
+        }
+        else if (api_return.status == false) {
+            switch (api_return.result) {
+                case 'BLOCKED_USER': //  Se agrega el caso para usuario bloqueado
+                    alert('Usuario bloqueado. Contacte al administrador');
+                    break;
+
+                case 'USER_PASSWORD_FAILED':
+                    alert('Usuario y/o contraseña incorrecta');
+                    break;
+                case 'USER_NOT_FOUND':
+                    alert('Usuario no encontrado.');
+                    break;
+
+                default:
+                    alert('Error desconocido');
+                    break;
+            }
+        }
+
+        return api_return;
+    }
+
+    function main() {
+        let attempts = 0;
+        let api_return;
+
+        do {
+            api_return = GUI_login();
+            if (api_return && api_return.result === 'USER_PASSWORD_FAILED') {
+                attempts++;
+                if (attempts >= maxLoginFailedAttempts) {
+                    alert('Demasiados intentos fallidos. Usuario bloqueado.');
+                    break;
+                }
+            }
+        } while (api_return === null || api_return.result === 'USER_PASSWORD_FAILED' || api_return.result === 'LOGOUT'); // Se incluye 'LOGOUT' en la condicion del while
+    }
+
+    window.onload = main;
+
+
+</script>
+
+</html>
+
