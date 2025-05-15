@@ -382,29 +382,22 @@ function getCurrentLoggedInUser() {
         }
     }
 
-
-
-
-    // Funcion para mostrar el menu principal
+    // Funcion para mostrar el menu principal -----------------
     function showMainMenu() {
         let option;
         do {
-            option = prompt("Menu principal:\n1 = Iniciar sesion\n2 = Crear cuenta de usuario\n3 = Gestionar artículos\nIngrese una opcion:"); // MODIFICACIoN: Agregada opcion para gestionar artículos
+            option = prompt("Menu principal:\n1 = Iniciar sesion\n2 = Crear cuenta de usuario\nIngrese una opcion:"); // Se eliminaron las opciones directas de gestión y compra
 
             if (option === '1') {
                 loginFlow();
             } else if (option === '2') {
                 createAccountFlow();
-            } else if (option === '3') { 
-                manageInventory();
-            } else if (option === '5') { 
-                buyItem();
             } else if (option !== null) {
-                alert("Opcion invalida. Por favor, ingrese 1, 2, 3 o 5."); 
+                alert("Opcion invalida. Por favor, ingrese 1 o 2."); //Mensaje de opciones válidas
             }
         } while (option !== null);
     }
-
+//--------------------------------------------
     function GUI_login() { //  para retornar un objeto con el resultado
         let username = prompt("Ingrese su nombre de usuario:");
         let password = prompt("Ingrese contraseña:");
