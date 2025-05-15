@@ -14,12 +14,11 @@
 
 <script type="text/javascript">
 
-    /*La empresa cliente nos comenta que el negocio está incorporando cada vez más personal
-    especializándolo en áreas para mejorar los procesos de organización. Por lo tanto, reorganizará los
-    usuarios de sistema en diferentes categorías. (Administradores, Clientes, Vendedores, Trabajadores de
-    depósito). Extienda el programa de modo tal que contemple estas categorías de usuario. Cree un usuario
-    para cada una a fin de que exista un empleado registrado en cada “puesto”. Cualquier usuario que inicie
-    sesión en el sistema deberá tener acceso al menú de acciones principal.*/
+    /*El dueño de la empresa nos informa que se están produciendo algunos problemas con la gestión del
+stock, dado que los usuarios vendedores, clientes y trabajadores de depósito tienen la posibilidad de
+impactar en el stock produciendo fallas en las cantidades. Para esto, se pretende restringir qué acción
+puede realizar cada tipo de usuario. Diseñe una estrategia que permita establecer qué acciones podría
+ejecutar cada “tipo de usuario” y extienda el programa para que se produzcan las validaciones necesarias.*/
 
     let authData = new Map();
     const maxLoginFailedAttempts = 3;
