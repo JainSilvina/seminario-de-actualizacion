@@ -1,0 +1,15 @@
+En el main.js  Agregue las 2 opciones
+ 
+// Para usar la versión con LocalStorage:
+import { APIModelAccess } from './APIModelAccess_LocalStorage.js';
+
+// Para usar la versión con SessionStorage:
+// import { APIModelAccess } from './APIModelAccess_SessionStorage.js';
+
+
+
+DIFERENCIAS ENTRE LocalStorage Y SessionStorage
+
+LocalStorage: Los datos persisten incluso después de cerrar el navegador.
+
+SessionStorage: Los datos se mantienen solo mientras la pestaña o ventana del navegador esté abierta. Se eliminan al cerrarla.
