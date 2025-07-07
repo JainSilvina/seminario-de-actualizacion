@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>   </title>
+	</head>
+	<body>
+		
+	</body>
+
+	<script>
+
+	class CustomCalculator extends HTMLElement
+	{
+		constructor()
+		{
+			super();
+
+			this.display = document.createElement('input');
+			this.btn1 = document.createElement('button');
+			this.btnPlus = document.createElement('button');
+			this.btnCalculate = document.createElement('button');
+
+			this.display.type = 'text'; //<input type="text">
+			this.btn1.innerText = '1'; //<button>1</button>
+			this.btnPlus.innerText = '+'; //<button>+</button>
+			this.btnCalculate.innerText = '='; //<button>=</button>
+		}
+
+		onButtonCalculateClick(event)
+		{
+			this.display.value = eval(this.display.value);
+		}
+
+		onButton1Click(event)
+		{
+			this.display.value += '1';
+		}
+
+		onButtonPlusClick(event)
+		{
+			this.display.value += '+';
+		}
+
+		connectedCallback()
+		{
+			//Se va a ejecutar siempre cuando el elemento es insertado en el DOM
+			//DOM = Arbol de elementos HTML ya como instancias (objetos) de JS.
+
+			this.appendChild(this.display);
+			this.appendChild(this.btn1);
+			this.appendChild(this.btnPlus);
+			this.appendChild(this.btnCalculate);
+
+			this.btn1.onclick = this.onButton1Click.bind(this);
+			this.btnPlus.onclick = this.onButtonPlusClick.bind(this);
+			this.btnCalculate.onclick = this.onButtonCalculateClick.bind(this);
+		}
+
+		disconnectedCallback()
+		{
+			//Se va a ejecutar siempre que se quite el elemento del documento
+		}
+
+		adoptedCallback()
+		{
+			//Se va a ejecutar siempre que el elemento se cambie de documento.
+		}
+
+		connectedMoveCallback()
+		{
+			//Se ejecuta cuando se mueve el elemento dentro del DOM
+		}
+
+		static get observableAttributes()
+		{
+			//Solo para publicar cuáles son los atributos que tendría disponible el webcomponent
+			//Si es utilizado a través de código HTML
+			//Ejemplo: <mi-elemento sabor="acido"> </mi-elemento>
+
+			return ['sabor']
+		}
+
+		attributeChangedCallback(attr, newvalue, oldvalue )
+		{
+			//Manejador de cambios de los valores de los atributos personalizados
+		}
+	}
+
+	customElements.define('x-calculator', CustomCalculator );
+
+	
+
+	function main()
+	{
+		document.body.appendChild( new CustomCalculator() );
+	}
+
+	window.onload = main;
+
+	</script>
+</html>
+web-component-v0.html
+Mostrando web-component-v0.html.
+Unidad 3 - WebComponents
+Matías Gastón Santiago
+•
+25 jun (Última modificación: 2 jul)
+100 puntos
+Fecha de entrega: 8 jul
+Forma de entrega
+Repositorios GIT. Subcarpeta: unidad-3
+
+Metodología
+
+El archivo adjuntado es un ejemplo que ilustra cómo desarrollar un WebComponent en JS. Puede considerar este ejemplo como una plantilla base para desarrollar otros WebComponents en los ejercicios. En todos los casos, nuestra metodología de trabajo consiste en los siguientes puntos claves a respetar en todas las entregas:
+No se escribe más código HTML para armar las interfaces gráficas web. Todo elemento HTML que pretenda elaborar se realizará mediante la DOM API, que es la API nativa de JS del navegador para realizar lo mismo a través de código JS.
+Ejemplo: 
+
+HTML:
+<button id="btn" class="btnRed">Test</button>
+
+JS:
+let btn = document.createElement('button');
+btn.innerText = "Test";
+btn.classList.add("btnRed");
+No será posible incrustar código HTML mediante la propiedad element.innerHTML 
+De la interfaz de WebComponent (Derivación de HTMLElement) deberá implementar únicamente connectedCallback y disconnectedCallback. Los demás métodos puede dejarlos presentados, pero quedarán con implementación vacía.
+El ejemplo de WebComponent está autocontenido en un único archivo para propósitos didácticos. En la resolución de los ejercicios deberá trabajar de forma modularizada en archivos. Cuyo punto de entrada de la aplicación es el archivo main.js
+Ejercicios
+1. En base a la plantilla base adjuntada "web-component-v0.html" complete el desarrollo de la misma para dejar completamente operativa la calculadora incorporando de modo tal que: Contenga todos los botones numéricos, incluya el punto, y pueda realizar las operaciones de: suma, resta, multiplicación y división.
+2. Efectúe la migración del código correspondiente al formulario de Login correspondiente de la página de W3Schools en su versión WebComponent. Utilice el CSS referenciado en la cabecera del código HTML.
+3. Efectúe la migración del código correspondiente al panel de lista de planes/precios en su versión WebComponent. Efectúe un diseño que considere que la información concreta que se muestra en pantalla pueda cambiar en cualquier momento.
+
+web-component-v0.html
+HTML
+
+Web Components - API web | MDN
+https://developer.mozilla.org/es/docs/Web/API/Web_components
+
+W3Schools Tryit Editor
+https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_examples_login
+
+W3Schools Tryit Editor
+https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_examples_pricing_tables
+
+Seminario Clase#13
+Vídeo de YouTube • ‪1 hora 46 minutos‬
+Comentarios de la clase
