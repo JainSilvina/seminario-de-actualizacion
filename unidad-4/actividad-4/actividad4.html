@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividad 4- Web Component con Tabla</title>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+</head>
+<body>
+
+<script>
+class UserTableComponent extends HTMLElement {
+  constructor() {
+    super();
+    
+    // MODIFICADO: En lugar de un HTMLTextArea, se creo un contenedor para la tabla.
+    this.tableContainer = document.createElement('div');
+    
+    // Botón para la solicitud
+    this.requestBtn = document.createElement('button');
+    this.requestBtn.innerText = 'Efectuar solicitud';
+    
+    // Adjunta los elementos al componente (se cambió outputTextArea por tableContainer)
+    this.appendChild(this.requestBtn);
+    this.appendChild(this.tableContainer);
+
+    // Definición de las constantes para filtrado y encabezados
+    this.dataKeys = ['id', 'username', 'name', 'email', 'website', 'phone'];
+    this.customHeaders = ['ID', 'Usuario', 'Nombre', 'Correo', 'Web', 'Celular'];
+  }
+   // Método de solicitud de datos (similar a Actividad 3, pero con endpoint diferente)
+  onRequestButtonClick(event) {
+    var self = this;
+    
+    self.requestBtn.disabled = true;
+    self.requestBtn.innerText = 'Cargando usuarios...';
+
+    // Se cambia el endpoint a /users/
+    fetch('https://jsonplaceholder.typicode.com/users/')
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Error en la solicitud: ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        self.renderTable(data);
+      })
+      .catch(function(error) {
+        console.error('Ocurrió un error:', error);
+        self.tableContainer.innerHTML = '<p class="w3-text-red">Ocurrió un error al cargar los datos.</p>';
+      })
+      .finally(function() {
+        self.requestBtn.disabled = false;
+        self.requestBtn.innerText = 'Efectuar solicitud';
+      });
+  }
+
+ // Renderizado de la tabla con estilos y filtrado
+  renderTable(data) {
+    this.tableContainer.innerHTML = '';
+    
+    if (!data || data.length === 0) {
+      this.tableContainer.innerText = 'No se encontraron datos.';
+      return;
+    }
+
+    var table = document.createElement('table');
+    // Aplicar estilos W3.CSS: w3-table, w3-hoverable, w3-card
+    table.className = 'w3-table w3-striped w3-bordered w3-hoverable w3-card'; 
+    var thead = document.createElement('thead');
+    var tbody = document.createElement('tbody');
+
+    // sE Crea la fila de encabezado con nombres alternativos y color
+    var headerRow = document.createElement('tr');
+    headerRow.className = 'w3-light-grey'; // Color para toda la fila del encabezado
+    
+    var self = this; // Para acceder a las propiedades dentro del forEach
+    
+    this.customHeaders.forEach(function(headerText) {
+      var th = document.createElement('th');
+      th.innerText = headerText;
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    
+    //Llena el cuerpo de la tabla con los datos filtrados
+    data.forEach(function(item) {
+      var row = document.createElement('tr');
+      
+      self.dataKeys.forEach(function(key) { // Se usa dataKeys para el filtrado
+        var td = document.createElement('td');
+        
+        if (key === 'email') { //Estilo "tag" para el correo
+          var emailTag = document.createElement('span');
+          emailTag.className = 'w3-tag w3-round w3-light-blue'; // Fondo de color y borde redondeado
+          emailTag.innerText = item[key];
+          td.appendChild(emailTag);
+        } else {
+          td.innerText = item[key];
+        }
+        row.appendChild(td);
+      });
+      tbody.appendChild(row);
+    });
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    this.tableContainer.appendChild(table);
+  }
+  
+  // Callback del ciclo de vida del componente
+  connectedCallback() {
+    // Asignar el evento al botón
+    this.requestBtn.onclick = this.onRequestButtonClick.bind(this);
+  }
+  
+  // Callback del ciclo de vida del componente
+  disconnectedCallback() {
+    // Limpiar el evento para evitar fugas de memoria
+    this.requestBtn.onclick = null;
+  }
+}
+//cambie a user y ahora no me anda!!, me olvide de cambiar el Post por User
+// Definir el Web Component
+customElements.define('x-user-table', UserTableComponent);
+
+
+function main() {
+  var userTableComponent = new UserTableComponent();
+  
+  document.body.appendChild(userTableComponent); 
+}
+
+
+// Ejecutar la función main al cargar la ventana
+window.onload = main;
+</script>
+
+</body>
+</html>
