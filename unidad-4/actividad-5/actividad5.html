@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividad 5 - Web Component de Tareas</title>
+  
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+</head>
+<body>
+
+<script>
+class TodoTableComponent extends HTMLElement {
+  constructor() {
+    super();
+    
+    // Contenedor para la tabla
+    this.tableContainer = document.createElement('div');
+    
+    // Boton para la solicitud
+    this.requestBtn = document.createElement('button');
+    this.requestBtn.innerText = 'Efectuar solicitud';
+    
+    this.appendChild(this.requestBtn);
+    this.appendChild(this.tableContainer);
+
+    //Definicion de las constantes para filtrado y encabezados
+    this.dataKeys = ['id', 'title', 'completed'];
+    this.customHeaders = ['ID', 'Título', 'Completada'];
+  }
+
+  // Metodo de solicitud de datos (usando el endpoint de todos)
+  onRequestButtonClick(event) {
+    var self = this;
+    
+    self.requestBtn.disabled = true;
+    self.requestBtn.innerText = 'Cargando tareas...';
+
+    //cambio el endpoint a /todos/
+    fetch('https://jsonplaceholder.typicode.com/todos/')
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Error en la solicitud: ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        self.renderTable(data);
+      })
+      .catch(function(error) {
+        console.error('Ocurrio un error:', error);
+        self.tableContainer.innerHTML = '<p class="w3-text-red">Ocurrio un error al cargar los datos.</p>';
+      })
+      .finally(function() {
+        self.requestBtn.disabled = false;
+        self.requestBtn.innerText = 'Efectuar solicitud';
+      });
+  }
+
+  //Renderizado de la tabla con estilos y logica del campo 'completed'
+  renderTable(data) {
+    this.tableContainer.innerHTML = '';
+    
+    if (!data || data.length === 0) {
+      this.tableContainer.innerText = 'No se encontraron datos.';
+      return;
+    }
+
+    var table = document.createElement('table');
+    table.className = 'w3-table w3-striped w3-bordered w3-hoverable w3-card'; 
+    var thead = document.createElement('thead');
+    var tbody = document.createElement('tbody');
+
+    var headerRow = document.createElement('tr');
+    headerRow.className = 'w3-light-grey'; 
+    
+    var self = this;
+    
+    this.customHeaders.forEach(function(headerText) {
+      var th = document.createElement('th');
+      th.innerText = headerText;
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    
+    data.forEach(function(item) {
+      var row = document.createElement('tr');
+      
+      self.dataKeys.forEach(function(key) {
+        var td = document.createElement('td');
+        
+        // nuevo agregado: Logica para el campo 'completed'
+        if (key === 'completed') {
+          td.innerText = item[key] ? '✅' : '❌'; // Si es true, ✅, si no, ❌
+        } else {
+          td.innerText = item[key];
+        }
+        row.appendChild(td);
+      });
+      tbody.appendChild(row);
+    });
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    this.tableContainer.appendChild(table);
+  }
+  
+  connectedCallback() {
+    this.requestBtn.onclick = this.onRequestButtonClick.bind(this);
+  }
+  
+  disconnectedCallback() {
+    this.requestBtn.onclick = null;
+  }
+}
+
+//Defino el Web Component con un nuevo nombre de etiqueta
+customElements.define('x-todo-table', TodoTableComponent);
+
+function main() {
+  var todoTableComponent = new TodoTableComponent();
+  document.body.appendChild(todoTableComponent); 
+}
+
+window.onload = main;
+</script>
+
+</body>
+</html>
