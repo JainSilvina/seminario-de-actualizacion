@@ -1,0 +1,46 @@
+Ejemplo de resolución Punto 1:
+
+
+Endpoint: /IUserService/GetAllUsers
+Método HTTP: GET
+Formato Serializacion: JSON
+Cabecera entrada: -
+Cabecera salida: -
+Estructura de datos IN: -
+Estructura de datos OUT:
+[
+     {
+         "id":2,
+         "name": "example",
+         "email": "example@example.com"
+     }  
+]
+
+Estructura de datos ERR:
+{
+    "type": "error"
+    "description": "Example error.."
+}
+
+
+
+Endpoint: "IUserService/GetUserById"
+Método HTTP: GET
+Formato Serializacion: JSON
+Cabecera entrada: -
+Cabecera salida: -
+Estructura de datos IN:
+{
+    "id" : 7
+}
+Estructura de datos OUT:
+{
+     "id":-1,
+     "name": "none",
+     "email": "none@example.com"
+}
+Estructura de datos ERR:
+{
+    "type": "error"
+    "description": "User not found"
+}
