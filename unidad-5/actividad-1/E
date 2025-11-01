@@ -1,0 +1,76 @@
+Endpoint: /IAuthService/Login
+Método HTTP: POST
+Formato Serialización: JSON
+Cabecera entrada: Content-Type: application/json
+Cabecera salida: Authorization: Bearer <token>
+Estructura de datos IN:
+{
+    "user": "usuario1",
+    "password": "12345"
+}
+Estructura de datos OUT:
+{
+    "token": "abc123xyz456",
+    "message": "Login successful."
+}
+Estructura de datos ERR:
+{
+    "type": "AuthException",
+    "description": "Usuario o contraseña incorrectos."
+}
+
+Endpoint: /IAuthService/Logout
+Método HTTP: POST
+Formato Serialización: JSON
+Cabecera entrada: Authorization: Bearer <token>
+Cabecera salida: -
+Estructura de datos IN:
+{
+    "token": "abc123xyz456"
+}
+Estructura de datos OUT:
+{
+    "status": "success",
+    "message": "Sesión cerrada correctamente."
+}
+Estructura de datos ERR:
+{
+    "type": "AuthException",
+    "description": "Token inválido o sesión no encontrada."
+}
+
+Endpoint: /IAuthService/ValidateToken
+Método HTTP: GET
+Formato Serialización: JSON
+Cabecera entrada: Authorization: Bearer <token>
+Cabecera salida: -
+Estructura de datos IN:
+?token="abc123xyz456"
+Estructura de datos OUT:
+{
+    "valid": true,
+    "user": "usuario1"
+}
+Estructura de datos ERR:
+{
+    "type": "AuthException",
+    "description": "Token expirado o inválido."
+}
+Endpoint: /IAuthService/HashPassword
+Método HTTP: POST
+Formato Serialización: JSON
+Cabecera entrada: Content-Type: application/json
+Cabecera salida: -
+Estructura de datos IN:
+{
+    "plainTextPassword": "12345"
+}
+Estructura de datos OUT:
+{
+    "hashedPassword": "5f4dcc3b5aa765d61d8327deb882cf99"
+}
+Estructura de datos ERR:
+{
+    "type": "error",
+    "description": "No se pudo generar el hash de la contraseña."
+}

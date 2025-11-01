@@ -1,0 +1,63 @@
+Endpoint: /IProductCatalog/SearchProducts
+Método HTTP: GET
+Formato Serialización: JSON
+Cabecera entrada: -
+Cabecera salida: -
+Estructura de datos IN:
+?keyword="cement"
+Estructura de datos OUT:
+[
+    {
+        "id": 1,
+        "name": "Cemento Portland",
+        "price": 4500.50
+    },
+    {
+        "id": 2,
+        "name": "Cemento Blanco",
+        "price": 5200.00
+    }
+]
+Estructura de datos ERR:
+{
+    "type": "error",
+    "description": "No products found for given keyword."
+}
+Endpoint: /IProductCatalog/GetProductById
+Método HTTP: GET
+Formato Serialización: JSON
+Cabecera entrada: -
+Cabecera salida: -
+Estructura de datos IN:
+?id= 7    
+Estructura de datos OUT:
+{
+    "id": 7,
+    "name": "Ladrillo hueco 18x18x33",
+    "price": 750.00
+}
+Estructura de datos ERR:
+{
+    "type": "error",
+    "description": "Product not found."
+}
+Endpoint: /IProductCatalog/UpdateStock
+Método HTTP: PUT
+Formato Serialización: JSON
+Cabecera entrada: Content-Type: application/json
+Cabecera salida: -
+Estructura de datos IN:
+{
+    "productId": 7,
+    "newStock": 120
+}
+Estructura de datos OUT:
+{
+    "status": "success",
+    "message": "Stock updated successfully."
+}
+Estructura de datos ERR:
+{
+    "type": "error",
+    "description": "Unable to update stock. Product ID not found."
+}

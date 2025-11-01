@@ -1,0 +1,63 @@
+Endpoint: /IAnalyticsService/TrackEvent
+Método HTTP: POST
+Formato Serialización: JSON
+Cabecera entrada: Content-Type: application/json
+Cabecera salida: -
+Estructura de datos IN:
+{
+    "eventName": "UserLogin",
+    "properties": {
+        "userId": "12345",
+        "device": "mobile",
+        "location": "Buenos Aires"
+    }
+}
+Estructura de datos OUT:
+{
+    "status": "success",
+    "message": "Event tracked successfully."
+}
+Estructura de datos ERR:
+{
+    "type": "error",
+    "description": "Invalid event data or missing parameters."
+}
+
+Endpoint: /IAnalyticsService/GetEventCount
+Método HTTP: GET
+Formato Serialización: JSON
+Cabecera entrada: -
+Cabecera salida: -
+Estructura de datos IN:
+?eventName=UserLogin
+Estructura de datos OUT:
+{
+    "eventName": "UserLogin",
+    "count": 2543
+}
+Estructura de datos ERR:
+{
+    "type": "error",
+    "description": "Event not found."
+}
+
+Endpoint: /IAnalyticsService/GetTopEvents
+Método HTTP: GET
+Formato Serialización: JSON
+Cabecera entrada: -
+Cabecera salida: -
+Estructura de datos IN:
+?limit=3
+Estructura de datos OUT:
+{
+    "topEvents": {
+        "UserLogin": 2543,
+        "AddToCart": 1980,
+        "Checkout": 1350
+    }
+}
+Estructura de datos ERR:
+{
+    "type": "error",
+    "description": "Unable to retrieve event data."
+}

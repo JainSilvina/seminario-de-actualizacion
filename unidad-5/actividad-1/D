@@ -1,0 +1,77 @@
+Endpoint: /IFileStorage/ListFiles
+Método HTTP: GET
+Formato Serialización: JSON
+Cabecera entrada: -
+Cabecera salida: -
+Estructura de datos IN:
+?directory=/documents/reports
+Estructura de datos OUT:
+[
+    "report1.txt",
+    "report2.pdf",
+    "summary.docx"
+]
+Estructura de datos ERR:
+{
+    "type": "error",
+    "description": "Directory not found."
+}
+
+Endpoint: /IFileStorage/ReadFile
+Método HTTP: GET
+Formato Serialización: JSON
+Cabecera entrada: -
+Cabecera salida: -
+Estructura de datos IN:
+?path=/documents/reports/report1.txt
+Estructura de datos OUT:
+
+{
+    "content": "Informe de resultados del mes de octubre..."
+}
+
+Estructura de datos ERR:
+
+{
+    "type": "error",
+    "description": "Archivo no encontrado o permiso denegado."
+}
+
+Endpoint: /IFileStorage/WriteFile
+Método HTTP: POST
+Formato Serialización: JSON
+Cabecera entrada: Content-Type: application/json
+Cabecera salida: -
+Estructura de datos IN:
+{
+    "path": "/documents/reports/newReport.txt",
+    "content": "Este es el nuevo archivo generado por el sistema."
+}
+Estructura de datos OUT:
+{
+    "status": "success",
+    "message": "File created successfully."
+}
+Estructura de datos ERR:
+{
+    "type": "error",
+    "description": "Permission denied or invalid path."
+}
+
+Endpoint: /IFileStorage/DeleteFile
+Método HTTP: DELETE
+Formato Serialización: JSON
+Cabecera entrada: Content-Type: application/json
+Cabecera salida: -
+Estructura de datos IN:
+?path=/documents/reports/oldReport.txt
+Estructura de datos OUT:
+{
+    "status": "success",
+    "message": "File deleted successfully."
+}
+Estructura de datos ERR:
+{
+    "type": "error",
+    "description": "Archivo no encontrado o permiso denegado."
+}
