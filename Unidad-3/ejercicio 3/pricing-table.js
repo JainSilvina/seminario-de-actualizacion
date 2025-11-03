@@ -1,6 +1,6 @@
 const defaultPlans = [
     { name: 'Basic', price: '19.99', unit: 'per month', features: ['10 GB Storage', '10 Emails', '5 Domains', '1 End User'], color: 'white' },
-    { name: 'Pro', price: '29.99', unit: 'per month', features: ['25 GB Storage', '25 Emails', '10 Domains', '1 User'], color: 'black', popular: true }, // Añadido 'popular' para el destaque
+    { name: 'Pro', price: '29.99', unit: 'per month', features: ['25 GB Storage', '25 Emails', '10 Domains', '1 User'], color: 'black', popular: true },
     { name: 'Premium', price: '49.99', unit: 'per month', features: ['50 GB Storage', '50 Emails', '15 Domains', '1 User'], color: 'white' }
 ];
 
@@ -24,11 +24,7 @@ class PricingTable extends HTMLElement {
 
     attributeChangedCallback(name, oldValue, newValue) {}
     adoptedCallback() {}
-
-    /**
-     * Método para actualizar los datos y regenerar la interfaz.
-     * @param {Array} newPlans - Array de nuevos objetos de planes.
-     */
+    
     setPlans(newPlans) {
         this.plans = newPlans;
         this.render(); 
