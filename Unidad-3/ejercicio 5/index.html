@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diálogo Modal con Formulario</title>
+</head>
+<body>
+    <h1>Aplicación de Contacto con WebComponents</h1>
+    
+    <button id="contact-button">Contáctenos</button>
+
+    <wc-modal-dialog id="contactModal">
+        <wc-contact-form id="formInsideModal"></wc-contact-form>
+    </wc-modal-dialog>
+
+    <script src="./WCComponents/WCModalDialog.js"></script>
+    <script src="./WCComponents/WCContactForm.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>
